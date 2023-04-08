@@ -9,7 +9,7 @@ namespace SBS_Inventory.Controllers
     public class InventoryController : ControllerBase
     {
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetInventory()
         {
             string connectionString = "Server=localhost;Database=SBSInventory;Trusted_Connection=True;";
             string query = "SELECT * FROM Inventory;";

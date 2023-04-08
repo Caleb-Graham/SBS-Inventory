@@ -1,8 +1,0 @@
-{
-    "scripts": {
-        "start": "node startup.js"
-    },
-    "dependencies": {
-        "mssql": "^9.1.1"
-    }
-}

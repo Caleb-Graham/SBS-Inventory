@@ -1,5 +1,5 @@
-export function getInventory() {
-    return fetch('http://localhost:5227/inventory')
+export function getProducts() {
+    return fetch('http://localhost:5227/Products')
       .then(response => {
         if (response.ok) {
           return response.json();

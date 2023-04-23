@@ -10,8 +10,9 @@ import Column from 'primevue/column';
 // import CSS resources
 import 'primevue/resources/primevue.min.css'            // core 
 import 'primevue/resources/themes/saga-blue/theme.css'  // theme
+import router from './router'
 
-const app = createApp(App);
+const app = createApp(App).use(router);
 
 app.use(PrimeVue);
 

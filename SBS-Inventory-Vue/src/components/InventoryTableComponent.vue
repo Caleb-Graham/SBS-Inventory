@@ -6,6 +6,7 @@
           :rows="10"
           :rowsPerPageOptions="[5, 10, 20, 50]"
           tableStyle="min-width: 50rem"
+          @row-click="onRowClick"
         >
           <Column field="sbsID" header="SBS ID" sortable></Column>
           <Column field="ncrID" header="NCR ID" sortable></Column>
@@ -42,10 +43,17 @@
         console.error(error);
       }
     },
+    methods: {
+      onRowClick() {
+        this.$router.push({ name: 'productdetail', params: { id: 1 } })
+  }
+    }
+    
   };
   </script>
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->
   <style scoped>
+  
   </style>
   

@@ -1,7 +1,5 @@
 <template>
   <div>
-    <p>TEST</p>
-
     <Button @click="addProducts()">Add Inventory</Button>
     <Dialog
       v-model:visible="addProductDialog"

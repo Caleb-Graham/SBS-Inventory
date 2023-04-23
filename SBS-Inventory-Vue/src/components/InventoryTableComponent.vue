@@ -6,7 +6,7 @@
           :rows="10"
           :rowsPerPageOptions="[5, 10, 20, 50]"
           tableStyle="min-width: 50rem"
-          @row-click="onRowClick"
+          @row-click="onRowClick($event.data.sbsID)"
         >
           <Column field="sbsID" header="SBS ID" sortable></Column>
           <Column field="ncrID" header="NCR ID" sortable></Column>
@@ -44,8 +44,8 @@
       }
     },
     methods: {
-      onRowClick() {
-        this.$router.push({ name: 'productdetail', params: { id: 1 } })
+      onRowClick(sbsID) {
+        this.$router.push({ name: 'productdetail', params: { id: sbsID } })
   }
     }
     

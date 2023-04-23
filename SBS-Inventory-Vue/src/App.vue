@@ -1,16 +1,18 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
   <InventoryComponent/>
+  <InventoryTableComponent/>
 </template>
 
 <script>
 import InventoryComponent from './components/InventoryComponent.vue';
+import InventoryTableComponent from './components/InventoryTableComponent.vue';
 
 
 export default {
   name: 'App',
   components: {
-    InventoryComponent
+    InventoryComponent,
+    InventoryTableComponent
   }
 }
 </script>

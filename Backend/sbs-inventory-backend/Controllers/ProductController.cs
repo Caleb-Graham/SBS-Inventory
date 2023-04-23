@@ -12,7 +12,7 @@ namespace SBS_Inventory.Controllers
         public IActionResult GetProducts()
         {
             string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
-            string query = "SELECT * FROM Product;";
+            string query = "SELECT SbsID, NcrID, ProductDescription, ModelID, Counts, Price, Cost, AdvEA, Discontinued, Source FROM Product;";
 
             var products = new List<Product>();
 

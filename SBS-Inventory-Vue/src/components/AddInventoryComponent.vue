@@ -7,57 +7,56 @@
       header="Add New Inventory Item"
       :style="{ width: '75vw' }"
     >
-        <div class="row-container">
-          <div class="input-text">
-            <label>SBS ID</label>
-            <InputText required v-model="sbsID" type="number"></InputText>
-          </div>
-          <div class="input-text">
-            <label>NCR ID</label>
-            <InputText required v-model="ncrID" type="number"></InputText>
-          </div>
-          <div class="input-text">
-            <label>Product Description</label>
-            <InputText v-model="productDescription" type="text"></InputText>
-          </div>
+      <div class="row-container">
+        <div class="input-text">
+          <label>SBS ID</label>
+          <InputText required v-model="sbsID" type="number"></InputText>
         </div>
-        <div class="row-container row-divider">
-          <div class="input-text">
-            <label>Model ID</label>
-            <InputText v-model="modelID" type="number"></InputText>
-          </div>
-          <div class="input-text">
-            <label>Count</label>
-            <InputText v-model="modelID" type="number"></InputText>
-          </div>
-          <div class="input-text">
-            <label>Price</label>
-            <InputText v-model="price" type="number"></InputText>
-          </div>
+        <div class="input-text">
+          <label>NCR ID</label>
+          <InputText required v-model="ncrID" type="number"></InputText>
         </div>
-        <div class="row-container row-divider">
-          <div class="input-text">
-            <label>Cost</label>
-            <InputText v-model="cost" type="number"></InputText>
-          </div>
-          <div class="input-text">
-            <label>Advanced EA</label>
-            <Dropdown
-              v-model="advancedEA"
-              placeholder="True or False"
-              :options="['True', 'False']"
-            ></Dropdown>
-          </div>
-          <div class="input-text">
-            <label>Discontinued</label>
-            <Dropdown
-              v-model="discontinued"
-              placeholder="True or False"
-              :options="['True', 'False']"
-              
-            ></Dropdown>
-          </div>
+        <div class="input-text">
+          <label>Product Description</label>
+          <InputText v-model="productDescription" type="text"></InputText>
         </div>
+      </div>
+      <div class="row-container row-divider">
+        <div class="input-text">
+          <label>Model ID</label>
+          <InputText v-model="modelID" type="number"></InputText>
+        </div>
+        <div class="input-text">
+          <label>Count</label>
+          <InputText v-model="counts" type="number"></InputText>
+        </div>
+        <div class="input-text">
+          <label>Price</label>
+          <InputText v-model="price" type="number"></InputText>
+        </div>
+      </div>
+      <div class="row-container row-divider">
+        <div class="input-text">
+          <label>Cost</label>
+          <InputText v-model="cost" type="number"></InputText>
+        </div>
+        <div class="input-text">
+          <label>Advanced EA</label>
+          <Dropdown
+            v-model="advancedEA"
+            placeholder="True or False"
+            :options="['True', 'False']"
+          ></Dropdown>
+        </div>
+        <div class="input-text">
+          <label>Discontinued</label>
+          <Dropdown
+            v-model="discontinued"
+            placeholder="True or False"
+            :options="['True', 'False']"
+          ></Dropdown>
+        </div>
+      </div>
       <div class="button-row row-divider">
         <Button
           @click="closeDialog()"
@@ -75,8 +74,8 @@
 </template>
 
 <script>
- import { addProduct } from "@/services/inventory.services.js";
- import { getProducts } from "@/services/inventory.services.js";
+import { addProduct } from "@/services/inventory.services.js";
+import { getProducts } from "@/services/inventory.services.js";
 
 export default {
   name: "AddInventoryComponent",
@@ -96,10 +95,9 @@ export default {
       cost: null,
       advancedEA: null,
       discontinued: null,
-      source: 'idk',
+      source: "idk",
     };
   },
-  setup() {},
   methods: {
     addProducts() {
       this.addProductDialog = true;
@@ -113,26 +111,36 @@ export default {
         NcrID: this.ncrID,
         ProductDescription: this.productDescription,
         ModelID: this.modelID,
-        Counts: this.counts, 
+        Counts: this.counts,
         Price: this.price,
         Cost: this.cost,
-        AdvEA: (this.advancedEA != null && this.advancedEA == 'True') ? (true) : ((this.advancedEA != null && this.advancedEA == 'False') ? (false) : (this.advancedEA)),
-        Discontinued: (this.discontinued != null && this.discontinued == 'True') ? (true) : ((this.discontinued != null && this.discontinued == 'False') ? (false) : (this.discontinued)),
-        Source: this.source
+        AdvEA:
+          this.advancedEA != null && this.advancedEA == "True"
+            ? true
+            : this.advancedEA != null && this.advancedEA == "False"
+            ? false
+            : this.advancedEA,
+        Discontinued:
+          this.discontinued != null && this.discontinued == "True"
+            ? true
+            : this.discontinued != null && this.discontinued == "False"
+            ? false
+            : this.discontinued,
+        Source: this.source,
       };
     },
 
     resetInventoryObject() {
       this.sbsID = null;
-      this.ncrID= null;
-      this.productDescription= null;
-      this.modelID= null;
-      this.counts= null;
-      this.price= null;
-      this.cost= null;
-      this.advancedEA= null;
-      this.discontinued= null;
-      this.source= 'idk';
+      this.ncrID = null;
+      this.productDescription = null;
+      this.modelID = null;
+      this.counts = null;
+      this.price = null;
+      this.cost = null;
+      this.advancedEA = null;
+      this.discontinued = null;
+      this.source = "idk";
     },
     saveNewProduct() {
       this.setNewInventoryObject();
@@ -147,8 +155,8 @@ export default {
           this.addProductDialog = false;
           this.resetInventoryObject();
           const data = await getProducts();
-            this.newInventoryItems = data;
-            this.emitter.emit('new-inventory-list', this.newInventoryItems);
+          this.newInventoryItems = data;
+          this.emitter.emit("new-inventory-list", this.newInventoryItems);
         })
         .catch((error) => {
           console.error(error.message);

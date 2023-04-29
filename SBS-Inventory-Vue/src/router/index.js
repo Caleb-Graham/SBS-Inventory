@@ -15,7 +15,8 @@ const routes = [
   {
     path: '/inventory/productdetail/:id',
     name: 'productdetail',
-    component: ProductDetailView
+    component: ProductDetailView,
+    props: route => ({id: route.params.id})
   },
 ]
 

@@ -8,6 +8,10 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import Dropdown from 'primevue/dropdown';
+import ConfirmDialog from 'primevue/confirmdialog';
+import Toast from 'primevue/toast';
+import ConfirmationService from 'primevue/confirmationservice';
+import ToastService from 'primevue/toastservice';
 
 
 // import CSS resources
@@ -22,6 +26,8 @@ const app = createApp(App).use(router);
 app.config.globalProperties.emitter = emitter;
 
 app.use(PrimeVue);
+app.use(ConfirmationService);
+app.use(ToastService);
 
 app.component('Button', Button);
 app.component('Dialog', Dialog);
@@ -29,5 +35,7 @@ app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('InputText', InputText);
 app.component('Dropdown', Dropdown);
+app.component('ConfirmDialog', ConfirmDialog);
+app.component('Toast', Toast);
 
 app.mount('#app');

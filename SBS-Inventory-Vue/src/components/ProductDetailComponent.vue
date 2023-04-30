@@ -4,29 +4,36 @@
     <ConfirmDialog></ConfirmDialog>
     <div class="delete">
       <h2 v-ripple class="p-ripple" @click="routeToInventory()">&lt; Back</h2>
-      <Button @click="deleteProductConfirm()">Delete Inventory Item</Button>
+      <Button style="height: fit-content" @click="deleteProductConfirm()"
+        >Delete Inventory Item</Button
+      >
     </div>
-      <Card class="card">
-        <template #title> {{ product.productDescription }} </template>
-        <template #content>
-          <div class="product-details-div">
-            <div class="prod-details-row">
-              <p class="p-font-weight">Items in Inventory: &nbsp;</p>
-              <p>{{ product.counts }}</p>
-            </div>
-
-            <div class="prod-details-row">
-              <p class="p-font-weight">Price: &nbsp;</p>
-              <p>{{ product.price }}</p>
-            </div>
-
-            <div class="prod-details-row">
-              <p class="p-font-weight">Cost: &nbsp;</p>
-              <p>{{ product.cost }}</p>
-            </div>
+    <Card class="card">
+      <template #header>
+        <div class="header-row">
+          <i class="pi pi-pencil edit-icon"></i>
+        </div>
+      </template>
+      <template #title> {{ product.productDescription }} </template>
+      <template #content>
+        <div class="product-details-div">
+          <div class="prod-details-row">
+            <p class="p-font-weight">Items in Inventory: &nbsp;</p>
+            <p>{{ product.counts }}</p>
           </div>
-        </template>
-      </Card>
+
+          <div class="prod-details-row">
+            <p class="p-font-weight">Price: &nbsp;</p>
+            <p>{{ product.price }}</p>
+          </div>
+
+          <div class="prod-details-row">
+            <p class="p-font-weight">Cost: &nbsp;</p>
+            <p>{{ product.cost }}</p>
+          </div>
+        </div>
+      </template>
+    </Card>
   </div>
 </template>
 <script>
@@ -90,18 +97,19 @@ export default {
   },
   mounted() {
     this.$primevue.config.ripple = true;
-},
-methods: {
-  routeToInventory() {
-    this.$router.push("/inventory");
-  }
-}
+  },
+  methods: {
+    routeToInventory() {
+      this.$router.push("/inventory");
+    },
+  },
 };
 </script>
 <style scoped>
 .delete {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .card {
@@ -109,7 +117,6 @@ methods: {
   margin-left: 50px;
   margin-right: 50px;
   background-color: lightgray;
-
 }
 
 .product-details-div {
@@ -127,7 +134,19 @@ methods: {
   flex-direction: row;
 }
 
-h1 {
+h2 {
+  cursor: pointer;
+}
+
+.header-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.edit-icon {
+  font-size: 1.3rem;
+  margin-right: 10px;
+  margin-top: 10px;
   cursor: pointer;
 }
 

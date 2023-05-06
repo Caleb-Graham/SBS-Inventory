@@ -11,7 +11,7 @@
     <Card class="card">
       <template #header>
         <div class="header-row">
-          <i class="pi pi-pencil edit-icon"></i>
+          <i @click="toggleEditingProduct()" class="pi pi-pencil edit-icon"></i>
         </div>
       </template>
       <template #title> {{ product.productDescription }} </template>
@@ -19,7 +19,8 @@
         <div class="product-details-div">
           <div class="prod-details-row">
             <p class="p-font-weight">Items in Inventory: &nbsp;</p>
-            <p>{{ product.counts }}</p>
+            <p v-if="!editingProduct">{{ product.counts }}</p>
+            <InputText v-if="editingProduct" required type="number"></InputText>
           </div>
 
           <div class="prod-details-row">
@@ -31,6 +32,12 @@
             <p class="p-font-weight">Cost: &nbsp;</p>
             <p>{{ product.cost }}</p>
           </div>
+        </div>
+      </template>
+      <template #footer>
+        <div v-if="editingProduct">
+          <Button style="margin-right: 10px" @click="toggleEditingProduct()">Cancel</Button>
+        <Button >Save</Button>
         </div>
       </template>
     </Card>
@@ -48,7 +55,11 @@ import { useRoute, useRouter } from "vue-router";
 
 export default {
   name: "ProductDetailComponent",
-
+  data: function () {
+    return {
+      editingProduct: false,
+    };
+  },
   setup() {
     const confirm = useConfirm();
     const toast = useToast();
@@ -102,6 +113,9 @@ export default {
     routeToInventory() {
       this.$router.push("/inventory");
     },
+    toggleEditingProduct() {
+      this.editingProduct = !this.editingProduct;
+    },
   },
 };
 </script>
@@ -150,4 +164,7 @@ h2 {
   cursor: pointer;
 }
 
+.cancel-button {
+  margin-right: 10px;
+}
 </style>

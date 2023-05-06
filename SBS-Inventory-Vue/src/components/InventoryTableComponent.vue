@@ -1,6 +1,7 @@
 <template>
   <div>
     <DataTable
+      v-model:filters="filters"
       :value="inventoryItems"
       paginator
       :rows="10"
@@ -8,6 +9,20 @@
       tableStyle="min-width: 50rem"
       @row-click="onRowClick($event.data.sbsID)"
     >
+      <template #header>
+        <div class="flex justify-content-end">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <InputText
+              v-model="filters['global'].value"
+              placeholder="Search for inventory..."
+            />
+          </span>
+        </div>
+      </template>
+      <template #empty> No inventory found. </template>
+      <template #loading> Loading inventory data. Please wait. </template>
+
       <Column field="sbsID" header="SBS ID" sortable></Column>
       <Column field="ncrID" header="NCR ID" sortable></Column>
       <Column
@@ -27,6 +42,7 @@
 
 <script>
 import { getProducts } from "@/services/inventory.services.js";
+import { FilterMatchMode } from "primevue/api";
 
 export default {
   name: "InventoryTableComponent",
@@ -34,6 +50,9 @@ export default {
     return {
       inventoryItems: [],
       addProductDialog: false,
+      filters: {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      },
     };
   },
   // TODO need to convert this to a setup when I get a chance

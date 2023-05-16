@@ -16,28 +16,123 @@
       </template>
       <template #title> {{ product.productDescription }} </template>
       <template #content>
-        <div class="product-details-div">
-          <div class="prod-details-row">
-            <p class="p-font-weight">Items in Inventory: &nbsp;</p>
-            <p v-if="!editingProduct">{{ product.counts }}</p>
-            <InputText v-if="editingProduct" required type="number"></InputText>
+        <div class="prod-details-row">
+          <div class="product-details-div">
+            <div class="prod-details-row">
+              <p class="p-font-weight">SBS ID: &nbsp;</p>
+              <p>{{ product.sbsID }}</p>
+            </div>
+
+            <div class="prod-details-row">
+              <p class="p-font-weight">NCR ID: &nbsp;</p>
+              <p v-if="!editingProduct">{{ product.ncrID }}</p>
+              <InputText
+                v-if="editingProduct"
+                required
+                type="number"
+              ></InputText>
+            </div>
+
+            <div class="prod-details-row">
+              <p class="p-font-weight">Description: &nbsp;</p>
+              <p v-if="!editingProduct">{{ product.productDescription }}</p>
+              <InputText
+                v-if="editingProduct"
+                required
+                type="number"
+              ></InputText>
+            </div>
+
+            <div class="prod-details-row">
+              <p class="p-font-weight">Location: &nbsp;</p>
+              <p v-if="!editingProduct">test</p>
+              <InputText
+                v-if="editingProduct"
+                required
+                type="number"
+              ></InputText>
+            </div>
+
+            <div class="prod-details-row">
+              <p class="p-font-weight">Status: &nbsp;</p>
+              <p v-if="!editingProduct">test</p>
+              <InputText
+                v-if="editingProduct"
+                required
+                type="number"
+              ></InputText>
+            </div>
+
+            <div class="prod-details-row">
+              <p class="p-font-weight">Model ID: &nbsp;</p>
+              <p v-if="!editingProduct">{{ product.modelID }}</p>
+              <InputText
+                v-if="editingProduct"
+                required
+                type="number"
+              ></InputText>
+            </div>
           </div>
 
-          <div class="prod-details-row">
-            <p class="p-font-weight">Price: &nbsp;</p>
-            <p>{{ product.price }}</p>
-          </div>
+            <div class="prod-details-div">
+              <div class="prod-details-row">
+                <p class="p-font-weight">Count: &nbsp;</p>
+                <p v-if="!editingProduct">{{ product.counts }}</p>
+                <InputText
+                  v-if="editingProduct"
+                  required
+                  type="number"
+                ></InputText>
+              </div>
 
-          <div class="prod-details-row">
-            <p class="p-font-weight">Cost: &nbsp;</p>
-            <p>{{ product.cost }}</p>
-          </div>
+              <div class="prod-details-row">
+                <p class="p-font-weight">Price: &nbsp;</p>
+                <p v-if="!editingProduct">{{ product.price }}</p>
+                <InputText
+                  v-if="editingProduct"
+                  required
+                  type="number"
+                ></InputText>
+              </div>
+
+              <div class="prod-details-row">
+                <p class="p-font-weight">Cost: &nbsp;</p>
+                <p v-if="!editingProduct">{{ product.cost }}</p>
+                <InputText
+                  v-if="editingProduct"
+                  required
+                  type="number"
+                ></InputText>
+              </div>
+
+              <div class="prod-details-row">
+                <p class="p-font-weight">Advanced Ea: &nbsp;</p>
+                <p v-if="!editingProduct">{{ product.advEA }}</p>
+                <InputText
+                  v-if="editingProduct"
+                  required
+                  type="number"
+                ></InputText>
+              </div>
+
+              <div class="prod-details-row">
+                <p class="p-font-weight">Discontinued: &nbsp;</p>
+                <p v-if="!editingProduct">{{ product.discontinued }}</p>
+                <InputText
+                  v-if="editingProduct"
+                  required
+                  type="number"
+                ></InputText>
+              </div>
+            </div>
         </div>
       </template>
       <template #footer>
         <div v-if="editingProduct">
-          <Button style="margin-right: 10px" @click="toggleEditingProduct()">Cancel</Button>
-        <Button >Save</Button>
+          <Button style="margin-right: 10px" @click="toggleEditingProduct()"
+            >Cancel</Button
+          >
+          <Button>Save</Button>
         </div>
       </template>
     </Card>

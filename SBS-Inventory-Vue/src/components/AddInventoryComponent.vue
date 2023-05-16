@@ -7,6 +7,7 @@
       header="Add New Inventory Item"
       :style="{ width: '75vw' }"
     >
+    <div style="display: flex; flex-direction: row; gap: 50px;">
       <div class="row-container">
         <div class="input-text">
           <label>SBS ID</label>
@@ -20,8 +21,6 @@
           <label>Product Description</label>
           <InputText v-model="productDescription" type="text"></InputText>
         </div>
-      </div>
-      <div class="row-container row-divider">
         <div class="input-text">
           <label>Model ID</label>
           <InputText v-model="modelID" type="number"></InputText>
@@ -30,12 +29,12 @@
           <label>Count</label>
           <InputText v-model="counts" type="number"></InputText>
         </div>
+      </div>
+      <div class="row-container row-divider">
         <div class="input-text">
           <label>Price</label>
           <InputText v-model="price" type="number"></InputText>
         </div>
-      </div>
-      <div class="row-container row-divider">
         <div class="input-text">
           <label>Cost</label>
           <InputText v-model="cost" type="number"></InputText>
@@ -56,7 +55,18 @@
             :options="['True', 'False']"
           ></Dropdown>
         </div>
+        <div class="input-text">
+          <label>Status</label>
+          <Dropdown
+            v-model="status"
+            placeholder="Where is this product?"
+            :options="['In Warehouse', 'In Vehicle']"
+          ></Dropdown>
+        </div>
       </div>
+    </div>
+      <!-- <div class="row-container row-divider"> -->
+      <!-- </div> -->
       <div class="button-row row-divider">
         <Button
           @click="closeDialog()"
@@ -95,6 +105,8 @@ export default {
       cost: null,
       advancedEA: null,
       discontinued: null,
+      status: null,
+      location: 1,
       source: "idk",
     };
   },
@@ -126,6 +138,8 @@ export default {
             : this.discontinued != null && this.discontinued == "False"
             ? false
             : this.discontinued,
+        Status: this.status == "In Warehouse" ? 0 : 1,
+        Location: this.location,
         Source: this.source,
       };
     },
@@ -170,7 +184,7 @@ export default {
 <style scoped>
 .row-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   gap: 50px;
 }
@@ -181,9 +195,9 @@ export default {
   width: 100%;
 }
 
-.row-divider {
+/* .row-divider {
   margin-top: 25px;
-}
+} */
 
 .button-row {
   display: flex;

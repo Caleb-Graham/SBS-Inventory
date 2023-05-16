@@ -12,7 +12,7 @@ namespace SBS_Inventory.Controllers
         public IActionResult GetProducts()
         {
             string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
-            string query = "SELECT SbsID, NcrID, ProductDescription, ModelID, Counts, Price, Cost, AdvEA, Discontinued, Source FROM Product;";
+            string query = "SELECT SbsID, NcrID, ProductDescription, ModelID, Counts, Price, Cost, AdvEA, StatusID, LocationID, Discontinued, Source FROM Product;";
 
             var products = new List<Product>();
 
@@ -34,8 +34,10 @@ namespace SBS_Inventory.Controllers
                     decimal Price = reader.GetDecimal(5);
                     decimal Cost = reader.GetDecimal(6);
                     bool AdvEA = reader.GetBoolean(7);
-                    bool Discontinued = reader.GetBoolean(8);
-                    string Source = reader.GetString(9);
+                    int StatusID = reader.GetInt32(8);
+                    int LocationID = reader.GetInt32(9);
+                    bool Discontinued = reader.GetBoolean(10);
+                    string Source = reader.GetString(11);
 
                     var product = new Product
                     {
@@ -47,6 +49,8 @@ namespace SBS_Inventory.Controllers
                         Price = Price,
                         Cost = Cost,
                         AdvEA = AdvEA,
+                        StatusID = StatusID,
+                        LocationID = LocationID,
                         Discontinued = Discontinued,
                         Source = Source,
                     };
@@ -114,7 +118,8 @@ namespace SBS_Inventory.Controllers
         public IActionResult AddProduct(Product product)
         {
             string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
-            string query = "INSERT INTO Product (SbsID, NcrID, ProductDescription, ModelID, Counts, Price, Cost, AdvEA, Discontinued, Source) VALUES (@SbsID, @NcrID, @ProductDescription, @ModelID, @Counts, @Price, @Cost, @AdvEA, @Discontinued, @Source);";
+            string query = @"INSERT INTO Product (SbsID, NcrID, ProductDescription, ModelID, Counts, Price, Cost, AdvEA, Discontinued, StatusID, LocationID, Source) 
+            VALUES (@SbsID, @NcrID, @ProductDescription, @ModelID, @Counts, @Price, @Cost, @AdvEA, @Discontinued, @Status, @Status, @Source);";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -128,6 +133,8 @@ namespace SBS_Inventory.Controllers
                 command.Parameters.AddWithValue("@Cost", product.Cost);
                 command.Parameters.AddWithValue("@AdvEA", product.AdvEA);
                 command.Parameters.AddWithValue("@Discontinued", product.Discontinued);
+                command.Parameters.AddWithValue("@Status", product.StatusID);
+                command.Parameters.AddWithValue("@LocationID", product.LocationID);
                 command.Parameters.AddWithValue("@Source", product.Source);
 
                 connection.Open();
@@ -137,6 +144,8 @@ namespace SBS_Inventory.Controllers
             return Ok(true);
         }
 
+
+// TODO DELETE by primary key
         [HttpDelete("{id}")]
         public IActionResult DeleteProduct(int id)
         {

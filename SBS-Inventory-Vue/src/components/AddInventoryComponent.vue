@@ -5,68 +5,78 @@
       v-model:visible="addProductDialog"
       modal
       header="Add New Inventory Item"
-      :style="{ width: '75vw' }"
+      :style="{ width: '60w' }"
     >
-    <div style="display: flex; flex-direction: row; gap: 50px;">
-      <div class="row-container">
-        <div class="input-text">
-          <label>SBS ID</label>
-          <InputText required v-model="sbsID" type="number"></InputText>
+      <div style="display: flex; flex-direction: row; gap: 50px">
+        <div class="row-container">
+          <div class="input-text">
+            <label>SBS ID</label>
+            <InputText required v-model="sbsID" type="number"></InputText>
+          </div>
+          <div class="input-text">
+            <label>NCR ID</label>
+            <InputText required v-model="ncrID" type="number"></InputText>
+          </div>
+          <div class="input-text">
+            <label>Product Description</label>
+            <InputText v-model="productDescription" type="text"></InputText>
+          </div>
+          <div class="input-text">
+            <label>Model ID</label>
+            <InputText v-model="modelID" type="number"></InputText>
+          </div>
+          <div class="input-text">
+            <label>Count</label>
+            <InputText v-model="counts" type="number"></InputText>
+          </div>
+          <div class="input-text">
+            <label>Source</label>
+            <InputText v-model="source" type="number"></InputText>
+          </div>
         </div>
-        <div class="input-text">
-          <label>NCR ID</label>
-          <InputText required v-model="ncrID" type="number"></InputText>
-        </div>
-        <div class="input-text">
-          <label>Product Description</label>
-          <InputText v-model="productDescription" type="text"></InputText>
-        </div>
-        <div class="input-text">
-          <label>Model ID</label>
-          <InputText v-model="modelID" type="number"></InputText>
-        </div>
-        <div class="input-text">
-          <label>Count</label>
-          <InputText v-model="counts" type="number"></InputText>
-        </div>
-      </div>
-      <div class="row-container row-divider">
-        <div class="input-text">
-          <label>Price</label>
-          <InputText v-model="price" type="number"></InputText>
-        </div>
-        <div class="input-text">
-          <label>Cost</label>
-          <InputText v-model="cost" type="number"></InputText>
-        </div>
-        <div class="input-text">
-          <label>Advanced EA</label>
-          <Dropdown
+        <div class="row-container row-divider">
+          <div class="input-text">
+            <label>Price</label>
+            <InputText v-model="price" type="number"></InputText>
+          </div>
+          <div class="input-text">
+            <label>Cost</label>
+            <InputText v-model="cost" type="number"></InputText>
+          </div>
+          <div class="input-text">
+            <label>Advanced EA</label>
+            <Dropdown
             v-model="advancedEA"
             placeholder="True or False"
             :options="['True', 'False']"
-          ></Dropdown>
-        </div>
-        <div class="input-text">
-          <label>Discontinued</label>
-          <Dropdown
+            ></Dropdown>
+          </div>
+          <div class="input-text">
+            <label>Discontinued</label>
+            <Dropdown
             v-model="discontinued"
             placeholder="True or False"
             :options="['True', 'False']"
-          ></Dropdown>
-        </div>
-        <div class="input-text">
-          <label>Status</label>
-          <Dropdown
-            v-model="status"
-            placeholder="Where is this product?"
-            :options="['In Warehouse', 'In Vehicle']"
-          ></Dropdown>
+            ></Dropdown>
+          </div>
+          <div class="input-text">
+            <label>Location</label>
+            <Dropdown
+              v-model="locationID"
+              placeholder="Where is this product"
+              :options="['Springfield', 'Ash Grove']"
+            ></Dropdown>
+          </div>
+          <div class="input-text">
+            <label>Status</label>
+            <Dropdown
+              v-model="status"
+              placeholder="Status"
+              :options="['In Warehouse', 'In Vehicle']"
+            ></Dropdown>
+          </div>
         </div>
       </div>
-    </div>
-      <!-- <div class="row-container row-divider"> -->
-      <!-- </div> -->
       <div class="button-row row-divider">
         <Button
           @click="closeDialog()"
@@ -186,23 +196,21 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 50px;
+  gap: 40px;
 }
 .input-text {
   display: flex;
   flex-direction: column;
   gap: 10px;
   width: 100%;
+  max-width: 199px;
 }
-
-/* .row-divider {
-  margin-top: 25px;
-} */
 
 .button-row {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   gap: 15px;
+  margin-top: 35px;
 }
 </style>

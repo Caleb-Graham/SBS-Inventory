@@ -33,6 +33,7 @@
       <Column field="locationID" header="Location" sortable></Column>
       <Column field="statusID" header="Status" sortable></Column>
       <Column field="modelID" header="Model ID" sortable></Column>
+      <Column field="source" header="Model ID" sortable></Column>
       <Column field="counts" header="Count" sortable></Column>
       <Column field="advEA" header="Advanced EA" sortable></Column>
       <Column field="discontinued" header="Discontinued" sortable></Column>

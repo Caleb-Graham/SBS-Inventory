@@ -62,9 +62,9 @@
           <div class="input-text">
             <label>Location</label>
             <Dropdown
-              v-model="locationID"
+              v-model="location"
               placeholder="Where is this product"
-              :options="['Springfield', 'Ash Grove']"
+              :options="locations"
             ></Dropdown>
           </div>
           <div class="input-text">
@@ -104,6 +104,7 @@ export default {
       newInventoryItem: {},
       newInventoryItems: [],
       addProductDialog: false,
+      locations: ['Springfield', 'Ash Grove'],
 
       // form values
       sbsID: null,
@@ -116,7 +117,7 @@ export default {
       advancedEA: null,
       discontinued: null,
       status: null,
-      location: 1,
+      location: null,
       source: "idk",
     };
   },

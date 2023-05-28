@@ -30,8 +30,8 @@
         header="Product Description"
         sortable
       ></Column>
-      <Column field="locationID" header="Location" sortable></Column>
-      <Column field="statusID" header="Status" sortable></Column>
+      <Column field="locationName" header="Location" sortable></Column>
+      <Column field="statusName" header="Status" sortable></Column>
       <Column field="modelID" header="Model ID" sortable></Column>
       <Column field="source" header="Model ID" sortable></Column>
       <Column field="counts" header="Count" sortable></Column>
@@ -60,6 +60,7 @@ export default {
   async created() {
     try {
       const data = await getProducts();
+      console.log('data', data)
       this.inventoryItems = data;
     } catch (error) {
       console.error(error);
@@ -70,8 +71,8 @@ export default {
     });
   },
   methods: {
-    onRowClick(sbsID) {
-      this.$router.push({ name: "productdetail", params: { id: sbsID } });
+    onRowClick(productID) {
+      this.$router.push({ name: "productdetail", params: { id: productID } });
     },
   },
 };

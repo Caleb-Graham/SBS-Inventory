@@ -1,5 +1,6 @@
 public class Product
 {
+    public int ProductID { get; set; }
     public int SbsID { get; set; }
     public int NcrID { get; set; }
     public string ProductDescription { get; set; }
@@ -12,6 +13,8 @@ public class Product
     public bool Discontinued { get; set; }
     public int StatusID { get; set; }
     public string Source { get; set; }
+    public string LocationName { get; set; }
+    public string StatusName { get; set; }
     public int LocationID { get; set; }
     public int? EmployeeID { get; set; }
 }

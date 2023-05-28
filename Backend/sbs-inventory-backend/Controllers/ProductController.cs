@@ -12,7 +12,11 @@ namespace SBS_Inventory.Controllers
         public IActionResult GetProducts()
         {
             string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
-            string query = "SELECT SbsID, NcrID, ProductDescription, ModelID, Counts, Price, Cost, AdvEA, StatusID, LocationID, Discontinued, Source FROM Product;";
+            string query = @"SELECT P.ProductID, P.SbsID, P.NcrID, P.ProductDescription, P.ModelID, P.Counts, P.Price, P.Cost, P.AdvEA, P.StatusID, P.LocationID, P.Discontinued, P.Source, L.LocationName, S.StatusName
+                            FROM Product P
+                            JOIN Location L ON P.LocationID = L.LocationID
+                            JOIN Status S ON P.StatusID = S.StatusID
+";
 
             var products = new List<Product>();
 
@@ -26,21 +30,25 @@ namespace SBS_Inventory.Controllers
 
                 while (reader.Read())
                 {
-                    int SbsID = reader.GetInt32(0);
-                    int NcrID = reader.GetInt32(1);
-                    string ProductDescription = reader.GetString(2);
-                    int ModelID = reader.GetInt32(3);
-                    int Counts = reader.GetInt32(4);
-                    decimal Price = reader.GetDecimal(5);
-                    decimal Cost = reader.GetDecimal(6);
-                    bool AdvEA = reader.GetBoolean(7);
-                    int StatusID = reader.GetInt32(8);
-                    int LocationID = reader.GetInt32(9);
-                    bool Discontinued = reader.GetBoolean(10);
-                    string Source = reader.GetString(11);
+                    int ProductID = reader.GetInt32(0);
+                    int SbsID = reader.GetInt32(1);
+                    int NcrID = reader.GetInt32(2);
+                    string ProductDescription = reader.GetString(3);
+                    int ModelID = reader.GetInt32(4);
+                    int Counts = reader.GetInt32(5);
+                    decimal Price = reader.GetDecimal(6);
+                    decimal Cost = reader.GetDecimal(7);
+                    bool AdvEA = reader.GetBoolean(8);
+                    int StatusID = reader.GetInt32(9);
+                    int LocationID = reader.GetInt32(10);
+                    bool Discontinued = reader.GetBoolean(11);
+                    string Source = reader.GetString(12);
+                    string LocationName = reader.GetString(13);
+                    string StatusName = reader.GetString(14);
 
                     var product = new Product
                     {
+                        ProductID = ProductID,
                         SbsID = SbsID,
                         NcrID = NcrID,
                         ProductDescription = ProductDescription,
@@ -53,6 +61,8 @@ namespace SBS_Inventory.Controllers
                         LocationID = LocationID,
                         Discontinued = Discontinued,
                         Source = Source,
+                        LocationName = LocationName,
+                        StatusName = StatusName,
                     };
 
                     products.Add(product);
@@ -66,12 +76,17 @@ namespace SBS_Inventory.Controllers
         public IActionResult GetProductById(int id)
         {
             string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
-            string query = "SELECT SbsID, NcrID, ProductDescription, ModelID, Counts, Price, Cost, AdvEA, Discontinued, Source FROM Product WHERE SbsID = @SbsID;";
+            string query = @"SELECT P.SbsID, P.NcrID, P.ProductDescription, P.ModelID, P.Counts, P.Price, P.Cost, P.AdvEA, P.StatusID, P.LocationID, P.Discontinued, P.Source, L.LocationName, S.StatusName
+                                FROM Product P
+                                JOIN Location L ON P.LocationID = L.LocationID
+                                JOIN Status S ON P.StatusID = S.StatusID
+                                WHERE P.ProductID = @ProductID
+                                ;";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@SbsID", id);
+                command.Parameters.AddWithValue("@ProductID", id);
 
                 connection.Open();
 
@@ -87,8 +102,12 @@ namespace SBS_Inventory.Controllers
                     decimal Price = reader.GetDecimal(5);
                     decimal Cost = reader.GetDecimal(6);
                     bool AdvEA = reader.GetBoolean(7);
-                    bool Discontinued = reader.GetBoolean(8);
-                    string Source = reader.GetString(9);
+                    int StatusID = reader.GetInt32(8);
+                    int LocationID = reader.GetInt32(9);
+                    bool Discontinued = reader.GetBoolean(10);
+                    string Source = reader.GetString(11);
+                    string LocationName = reader.GetString(12);
+                    string StatusName = reader.GetString(13);
 
                     var product = new Product
                     {
@@ -100,8 +119,12 @@ namespace SBS_Inventory.Controllers
                         Price = Price,
                         Cost = Cost,
                         AdvEA = AdvEA,
+                        StatusID = StatusID,
+                        LocationID = LocationID,
                         Discontinued = Discontinued,
                         Source = Source,
+                        LocationName = LocationName,
+                        StatusName = StatusName,
                     };
 
                     return Ok(product);
@@ -150,12 +173,12 @@ namespace SBS_Inventory.Controllers
         public IActionResult DeleteProduct(int id)
         {
             string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
-            string query = "DELETE FROM Product WHERE SbsID = @SbsID;";
+            string query = "DELETE FROM Product WHERE ProductID = @ProductID;";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@SbsID", id);
+                command.Parameters.AddWithValue("@ProductID", id);
 
                 connection.Open();
 

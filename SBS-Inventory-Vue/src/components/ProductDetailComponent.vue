@@ -16,7 +16,7 @@
       </template>
       <template #title> {{ product.productDescription }} </template>
       <template #content>
-        <div class="prod-details-row">
+        <div class="prod-details-container">
           <div class="product-details-div">
             <div class="prod-details-row">
               <p class="p-font-weight">SBS ID: &nbsp;</p>
@@ -45,24 +45,48 @@
 
             <div class="prod-details-row">
               <p class="p-font-weight">Location: &nbsp;</p>
-              <p v-if="!editingProduct">test</p>
-              <InputText
+              <p v-if="!editingProduct">{{ product.locationName }}</p>
+              <Dropdown
+                v-if="editingProduct"
+                v-model="location"
+                placeholder="Where is this product"
+                :options="locations"
+              ></Dropdown>
+              <!-- <InputText
                 v-if="editingProduct"
                 required
                 type="number"
-              ></InputText>
+              ></InputText> -->
             </div>
 
             <div class="prod-details-row">
               <p class="p-font-weight">Status: &nbsp;</p>
-              <p v-if="!editingProduct">test</p>
+              <p v-if="!editingProduct">{{ product.statusName }}</p>
+              <Dropdown
+                v-if="editingProduct"
+                v-model="status"
+                placeholder="Status"
+                :options="['In Warehouse', 'In Vehicle']"
+              ></Dropdown>
+              <!-- <InputText
+                v-if="editingProduct"
+                required
+                type="number"
+              ></InputText> -->
+            </div>
+
+            <div class="prod-details-row">
+              <p class="p-font-weight">Source: &nbsp;</p>
+              <p v-if="!editingProduct">{{ product.source }}</p>
               <InputText
                 v-if="editingProduct"
                 required
                 type="number"
               ></InputText>
             </div>
+          </div>
 
+          <div class="prod-details-div">
             <div class="prod-details-row">
               <p class="p-font-weight">Model ID: &nbsp;</p>
               <p v-if="!editingProduct">{{ product.modelID }}</p>
@@ -72,59 +96,69 @@
                 type="number"
               ></InputText>
             </div>
-          </div>
 
-            <div class="prod-details-div">
-              <div class="prod-details-row">
-                <p class="p-font-weight">Count: &nbsp;</p>
-                <p v-if="!editingProduct">{{ product.counts }}</p>
-                <InputText
-                  v-if="editingProduct"
-                  required
-                  type="number"
-                ></InputText>
-              </div>
-
-              <div class="prod-details-row">
-                <p class="p-font-weight">Price: &nbsp;</p>
-                <p v-if="!editingProduct">{{ product.price }}</p>
-                <InputText
-                  v-if="editingProduct"
-                  required
-                  type="number"
-                ></InputText>
-              </div>
-
-              <div class="prod-details-row">
-                <p class="p-font-weight">Cost: &nbsp;</p>
-                <p v-if="!editingProduct">{{ product.cost }}</p>
-                <InputText
-                  v-if="editingProduct"
-                  required
-                  type="number"
-                ></InputText>
-              </div>
-
-              <div class="prod-details-row">
-                <p class="p-font-weight">Advanced Ea: &nbsp;</p>
-                <p v-if="!editingProduct">{{ product.advEA }}</p>
-                <InputText
-                  v-if="editingProduct"
-                  required
-                  type="number"
-                ></InputText>
-              </div>
-
-              <div class="prod-details-row">
-                <p class="p-font-weight">Discontinued: &nbsp;</p>
-                <p v-if="!editingProduct">{{ product.discontinued }}</p>
-                <InputText
-                  v-if="editingProduct"
-                  required
-                  type="number"
-                ></InputText>
-              </div>
+            <div class="prod-details-row">
+              <p class="p-font-weight">Count: &nbsp;</p>
+              <p v-if="!editingProduct">{{ product.counts }}</p>
+              <InputText
+                v-if="editingProduct"
+                required
+                type="number"
+              ></InputText>
             </div>
+
+            <div class="prod-details-row">
+              <p class="p-font-weight">Price: &nbsp;</p>
+              <p v-if="!editingProduct">{{ product.price }}</p>
+              <InputText
+                v-if="editingProduct"
+                required
+                type="number"
+              ></InputText>
+            </div>
+
+            <div class="prod-details-row">
+              <p class="p-font-weight">Cost: &nbsp;</p>
+              <p v-if="!editingProduct">{{ product.cost }}</p>
+              <InputText
+                v-if="editingProduct"
+                required
+                type="number"
+              ></InputText>
+            </div>
+
+            <div class="prod-details-row">
+              <p class="p-font-weight">Advanced Ea: &nbsp;</p>
+              <p v-if="!editingProduct">{{ product.advEA }}</p>
+              <Dropdown
+                v-if="editingProduct"
+                v-model="advancedEA"
+                placeholder="True or False"
+                :options="['True', 'False']"
+              ></Dropdown>
+              <!-- <InputText
+                  v-if="editingProduct"
+                  required
+                  type="number"
+                ></InputText> -->
+            </div>
+
+            <div class="prod-details-row">
+              <p class="p-font-weight">Discontinued: &nbsp;</p>
+              <p v-if="!editingProduct">{{ product.discontinued }}</p>
+              <Dropdown
+                v-if="editingProduct"
+                v-model="discontinued"
+                placeholder="True or False"
+                :options="['True', 'False']"
+              ></Dropdown>
+              <!-- <InputText
+                  v-if="editingProduct"
+                  required
+                  type="number"
+                ></InputText> -->
+            </div>
+          </div>
         </div>
       </template>
       <template #footer>
@@ -231,7 +265,7 @@ export default {
 .product-details-div {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  /* align-items: flex-start; */
 }
 
 .p-font-weight {
@@ -241,6 +275,13 @@ export default {
 .prod-details-row {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+}
+
+.prod-details-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 h2 {

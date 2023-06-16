@@ -167,8 +167,52 @@ namespace SBS_Inventory.Controllers
             return Ok(true);
         }
 
+        // I think because these are the same endpoint it is somehow triggering cors error???
 
-// TODO DELETE by primary key
+        [HttpPost]
+        [Route("products/update")] 
+        public IActionResult UpdateProduct(Product product)
+        {
+            string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
+            string query = @"UPDATE Product SET 
+                            NcrID = @NcrID, 
+                            ProductDescription = @ProductDescription, 
+                            ModelID = @ModelID, 
+                            Counts = @Counts, 
+                            Price = @Price, 
+                            Cost = @Cost, 
+                            AdvEA = @AdvEA, 
+                            Discontinued = @Discontinued, 
+                            StatusID = @StatusID, 
+                            LocationID = @LocationID, 
+                            Source = @Source 
+                            WHERE SbsID = @SbsID;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@SbsID", product.SbsID);
+                command.Parameters.AddWithValue("@NcrID", product.NcrID);
+                command.Parameters.AddWithValue("@ProductDescription", product.ProductDescription);
+                command.Parameters.AddWithValue("@ModelID", product.ModelID);
+                command.Parameters.AddWithValue("@Counts", product.Counts);
+                command.Parameters.AddWithValue("@Price", product.Price);
+                command.Parameters.AddWithValue("@Cost", product.Cost);
+                command.Parameters.AddWithValue("@AdvEA", product.AdvEA);
+                command.Parameters.AddWithValue("@Discontinued", product.Discontinued);
+                command.Parameters.AddWithValue("@StatusID", product.StatusID);
+                command.Parameters.AddWithValue("@LocationID", product.LocationID);
+                command.Parameters.AddWithValue("@Source", product.Source);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+
+            return Ok(true);
+        }
+
+
+
         [HttpDelete("{id}")]
         public IActionResult DeleteProduct(int id)
         {

@@ -31,7 +31,7 @@
           </div>
           <div class="input-text">
             <label>Source</label>
-            <InputText v-model="source" type="number"></InputText>
+            <InputText v-model="source" type="text"></InputText>
           </div>
         </div>
         <div class="row-container row-divider">
@@ -64,7 +64,7 @@
             <Dropdown
               v-model="location"
               placeholder="Where is this product"
-              :options="locations"
+              :options="['Springfield', 'Ash Grove']"
             ></Dropdown>
           </div>
           <div class="input-text">
@@ -104,7 +104,6 @@ export default {
       newInventoryItem: {},
       newInventoryItems: [],
       addProductDialog: false,
-      locations: ['Springfield', 'Ash Grove'],
 
       // form values
       sbsID: null,
@@ -149,8 +148,8 @@ export default {
             : this.discontinued != null && this.discontinued == "False"
             ? false
             : this.discontinued,
-        Status: this.status == "In Warehouse" ? 0 : 1,
-        Location: this.location,
+        StatusID: this.status == "In Warehouse" ? '1' : '2',
+        LocationID: this.location == "Springfield" ? '1' : '2',
         Source: this.source,
       };
     },

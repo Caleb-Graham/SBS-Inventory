@@ -20,7 +20,13 @@
           <div class="product-details-div">
             <div class="prod-details-row">
               <p class="p-font-weight">SBS ID: &nbsp;</p>
-              <p>{{ product.sbsID }}</p>
+              <p v-if="!editingProduct">{{ product.sbsID }}</p>
+              <InputText
+                v-if="editingProduct"
+                v-model="product.sbsID"
+                required
+                type="number"
+              ></InputText>
             </div>
 
             <div class="prod-details-row">
@@ -28,6 +34,7 @@
               <p v-if="!editingProduct">{{ product.ncrID }}</p>
               <InputText
                 v-if="editingProduct"
+                v-model="product.ncrID"
                 required
                 type="number"
               ></InputText>
@@ -38,8 +45,9 @@
               <p v-if="!editingProduct">{{ product.productDescription }}</p>
               <InputText
                 v-if="editingProduct"
+                v-model="product.productDescription"
                 required
-                type="number"
+                type="text"
               ></InputText>
             </div>
 
@@ -48,15 +56,10 @@
               <p v-if="!editingProduct">{{ product.locationName }}</p>
               <Dropdown
                 v-if="editingProduct"
-                v-model="location"
+                v-model="product.locationName"
                 placeholder="Where is this product"
-                :options="locations"
+                :options="['Springfield', 'Ash Grove']"
               ></Dropdown>
-              <!-- <InputText
-                v-if="editingProduct"
-                required
-                type="number"
-              ></InputText> -->
             </div>
 
             <div class="prod-details-row">
@@ -64,15 +67,10 @@
               <p v-if="!editingProduct">{{ product.statusName }}</p>
               <Dropdown
                 v-if="editingProduct"
-                v-model="status"
+                v-model="product.statusName"
                 placeholder="Status"
                 :options="['In Warehouse', 'In Vehicle']"
               ></Dropdown>
-              <!-- <InputText
-                v-if="editingProduct"
-                required
-                type="number"
-              ></InputText> -->
             </div>
 
             <div class="prod-details-row">
@@ -80,8 +78,9 @@
               <p v-if="!editingProduct">{{ product.source }}</p>
               <InputText
                 v-if="editingProduct"
+                v-model="product.source"
                 required
-                type="number"
+                type="text"
               ></InputText>
             </div>
           </div>
@@ -92,6 +91,7 @@
               <p v-if="!editingProduct">{{ product.modelID }}</p>
               <InputText
                 v-if="editingProduct"
+                v-model="product.modelID"
                 required
                 type="number"
               ></InputText>
@@ -102,6 +102,7 @@
               <p v-if="!editingProduct">{{ product.counts }}</p>
               <InputText
                 v-if="editingProduct"
+                v-model="product.counts"
                 required
                 type="number"
               ></InputText>
@@ -112,6 +113,7 @@
               <p v-if="!editingProduct">{{ product.price }}</p>
               <InputText
                 v-if="editingProduct"
+                v-model="product.price"
                 required
                 type="number"
               ></InputText>
@@ -122,6 +124,7 @@
               <p v-if="!editingProduct">{{ product.cost }}</p>
               <InputText
                 v-if="editingProduct"
+                v-model="product.cost"
                 required
                 type="number"
               ></InputText>
@@ -132,15 +135,10 @@
               <p v-if="!editingProduct">{{ product.advEA }}</p>
               <Dropdown
                 v-if="editingProduct"
-                v-model="advancedEA"
+                v-model="product.advEA"
                 placeholder="True or False"
                 :options="['True', 'False']"
               ></Dropdown>
-              <!-- <InputText
-                  v-if="editingProduct"
-                  required
-                  type="number"
-                ></InputText> -->
             </div>
 
             <div class="prod-details-row">
@@ -148,15 +146,10 @@
               <p v-if="!editingProduct">{{ product.discontinued }}</p>
               <Dropdown
                 v-if="editingProduct"
-                v-model="discontinued"
+                v-model="product.discontinued"
                 placeholder="True or False"
                 :options="['True', 'False']"
               ></Dropdown>
-              <!-- <InputText
-                  v-if="editingProduct"
-                  required
-                  type="number"
-                ></InputText> -->
             </div>
           </div>
         </div>
@@ -166,7 +159,7 @@
           <Button style="margin-right: 10px" @click="toggleEditingProduct()"
             >Cancel</Button
           >
-          <Button>Save</Button>
+          <Button @click="updateProduct()">Save</Button>
         </div>
       </template>
     </Card>
@@ -176,6 +169,7 @@
 import {
   getProductById,
   deleteProductById,
+  updateProduct,
 } from "@/services/inventory.services.js";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -244,6 +238,20 @@ export default {
     },
     toggleEditingProduct() {
       this.editingProduct = !this.editingProduct;
+    },
+    async getProductByIdTest() {
+      try {
+        const data = await getProductById(this.route.params.id);
+        console.log('data', data)
+        this.product = data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async updateProduct() {
+      console.log('product', this.product)
+      await updateProduct(this.product);
+      await getProductById(this.route.params.id);
     },
   },
 };

@@ -7,7 +7,7 @@
       :rows="10"
       :rowsPerPageOptions="[5, 10, 20, 50]"
       tableStyle="min-width: 50rem"
-      @row-click="onRowClick($event.data.sbsID)"
+      @row-click="onRowClick($event.data.productID)"
     >
       <template #header>
         <div class="flex justify-content-end">

@@ -37,6 +37,24 @@ export function getProducts() {
       }
     });
   }
+
+  export function updateProduct(product) {
+    return fetch(`http://localhost:5227/products/update/${product}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(product)
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Failed to update product');
+      }
+    });
+  }
+  
   
   export function deleteProductById(id) {
     return fetch(`http://localhost:5227/Products/${id}`, {

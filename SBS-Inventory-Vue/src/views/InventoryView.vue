@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="add-inventory">
+      <Button>Add Location placeholder</Button>
       <AddInventoryComponent/>
     </div>
   <InventoryTableComponent/>
@@ -24,7 +25,7 @@ export default {
 <style scoped>
   .add-inventory {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-bottom: 25px;
   }
 </style>

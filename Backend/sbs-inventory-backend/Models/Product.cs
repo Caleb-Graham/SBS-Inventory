@@ -11,10 +11,10 @@ public class Product
     public decimal Cost { get; set; }
     public bool AdvEA { get; set; }
     public bool Discontinued { get; set; }
+    public int LocationID { get; set; }
     public int StatusID { get; set; }
     public string Source { get; set; }
-    public string LocationName { get; set; }
-    public string StatusName { get; set; }
-    public int LocationID { get; set; }
+    public string? LocationName { get; set; }
+    public string? StatusName { get; set; }
     public int? EmployeeID { get; set; }
 }

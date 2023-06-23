@@ -34,7 +34,7 @@
             <InputText v-model="source" type="text"></InputText>
           </div>
         </div>
-        <div class="row-container row-divider">
+        <div class="row-container">
           <div class="input-text">
             <label>Price</label>
             <InputText v-model="price" type="number"></InputText>
@@ -77,7 +77,7 @@
           </div>
         </div>
       </div>
-      <div class="button-row row-divider">
+      <div class="button-row">
         <Button
           @click="closeDialog()"
           label="Cancel"

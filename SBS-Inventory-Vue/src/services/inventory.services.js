@@ -39,7 +39,7 @@ export function getProducts() {
   }
 
   export function updateProduct(product) {
-    return fetch(`http://localhost:5227/products/update/${product}`, {
+    return fetch(`http://localhost:5227/products/update`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

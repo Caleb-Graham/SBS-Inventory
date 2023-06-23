@@ -117,7 +117,7 @@ export default {
       discontinued: null,
       status: null,
       location: null,
-      source: "idk",
+      source: null,
     };
   },
   methods: {
@@ -164,7 +164,7 @@ export default {
       this.cost = null;
       this.advancedEA = null;
       this.discontinued = null;
-      this.source = "idk";
+      this.source = null;
     },
     saveNewProduct() {
       this.setNewInventoryObject();

@@ -137,7 +137,7 @@
                 v-if="editingProduct"
                 v-model="product.advEA"
                 placeholder="True or False"
-                :options="['True', 'False']"
+                :options="['true', 'false']"
               ></Dropdown>
             </div>
 
@@ -148,7 +148,7 @@
                 v-if="editingProduct"
                 v-model="product.discontinued"
                 placeholder="True or False"
-                :options="['True', 'False']"
+                :options="['true', 'false']"
               ></Dropdown>
             </div>
           </div>
@@ -175,6 +175,7 @@ import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { Status } from '@/enums/status.enum';
 
 export default {
   name: "ProductDetailComponent",
@@ -219,6 +220,8 @@ export default {
       try {
         const data = await getProductById(route.params.id);
         product.value = data;
+        product.value.discontinued = product.value.discontinued.toString()
+        product.value.advEA = product.value.discontinued.toString()
       } catch (error) {
         console.error(error);
       }
@@ -239,19 +242,12 @@ export default {
     toggleEditingProduct() {
       this.editingProduct = !this.editingProduct;
     },
-    async getProductByIdTest() {
-      try {
-        const data = await getProductById(this.route.params.id);
-        console.log('data', data)
-        this.product = data;
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async updateProduct() {
-      console.log('product', this.product)
+    async updateProduct() { 
+      this.product.statusName == 'In Vehicle' ? this.product.statusID = Status.InVehicle : this.product.statusID = Status.InWarehouse;
+      this.product.discontinued == 'true' ? this.product.discontinued = true : this.product.discontinued = false;
+      this.product.advEA == 'true' ? this.product.advEA = true : this.product.advEA = false;
       await updateProduct(this.product);
-      await getProductById(this.route.params.id);
+      this.toggleEditingProduct()
     },
   },
 };

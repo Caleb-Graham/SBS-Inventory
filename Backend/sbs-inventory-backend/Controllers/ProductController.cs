@@ -76,7 +76,7 @@ namespace SBS_Inventory.Controllers
         public IActionResult GetProductById(int id)
         {
             string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
-            string query = @"SELECT P.SbsID, P.NcrID, P.ProductDescription, P.ModelID, P.Counts, P.Price, P.Cost, P.AdvEA, P.StatusID, P.LocationID, P.Discontinued, P.Source, L.LocationName, S.StatusName
+            string query = @"SELECT P.ProductID, P.SbsID, P.NcrID, P.ProductDescription, P.ModelID, P.Counts, P.Price, P.Cost, P.AdvEA, P.StatusID, P.LocationID, P.Discontinued, P.Source, L.LocationName, S.StatusName
                                 FROM Product P
                                 JOIN Location L ON P.LocationID = L.LocationID
                                 JOIN Status S ON P.StatusID = S.StatusID
@@ -94,23 +94,25 @@ namespace SBS_Inventory.Controllers
 
                 if (reader.Read())
                 {
-                    int SbsID = reader.GetInt32(0);
-                    int NcrID = reader.GetInt32(1);
-                    string ProductDescription = reader.GetString(2);
-                    int ModelID = reader.GetInt32(3);
-                    int Counts = reader.GetInt32(4);
-                    decimal Price = reader.GetDecimal(5);
-                    decimal Cost = reader.GetDecimal(6);
-                    bool AdvEA = reader.GetBoolean(7);
-                    int StatusID = reader.GetInt32(8);
-                    int LocationID = reader.GetInt32(9);
-                    bool Discontinued = reader.GetBoolean(10);
-                    string Source = reader.GetString(11);
-                    string LocationName = reader.GetString(12);
-                    string StatusName = reader.GetString(13);
+                    int ProductID = reader.GetInt32(0);
+                    int SbsID = reader.GetInt32(1);
+                    int NcrID = reader.GetInt32(2);
+                    string ProductDescription = reader.GetString(3);
+                    int ModelID = reader.GetInt32(4);
+                    int Counts = reader.GetInt32(5);
+                    decimal Price = reader.GetDecimal(6);
+                    decimal Cost = reader.GetDecimal(7);
+                    bool AdvEA = reader.GetBoolean(8);
+                    int StatusID = reader.GetInt32(9);
+                    int LocationID = reader.GetInt32(10);
+                    bool Discontinued = reader.GetBoolean(11);
+                    string Source = reader.GetString(12);
+                    string LocationName = reader.GetString(13);
+                    string StatusName = reader.GetString(14);
 
                     var product = new Product
                     {
+                        ProductID = ProductID,
                         SbsID = SbsID,
                         NcrID = NcrID,
                         ProductDescription = ProductDescription,
@@ -167,14 +169,14 @@ namespace SBS_Inventory.Controllers
             return Ok(true);
         }
 
-        // I think because these are the same endpoint it is somehow triggering cors error???
-
-        [HttpPost]
-        [Route("products/update")] 
+        [HttpPut]
+        [Route("/products/update")] 
         public IActionResult UpdateProduct(Product product)
         {
             string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
-            string query = @"UPDATE Product SET 
+            string query = @"UPDATE Product 
+                            SET 
+                            SbsID = @SbsID, 
                             NcrID = @NcrID, 
                             ProductDescription = @ProductDescription, 
                             ModelID = @ModelID, 
@@ -183,14 +185,23 @@ namespace SBS_Inventory.Controllers
                             Cost = @Cost, 
                             AdvEA = @AdvEA, 
                             Discontinued = @Discontinued, 
-                            StatusID = @StatusID, 
-                            LocationID = @LocationID, 
+                            StatusID = (
+                                SELECT StatusID 
+                                FROM Status 
+                                WHERE StatusName = @StatusName
+                            ), 
+                            LocationID = (
+                                SELECT LocationID 
+                                FROM Location 
+                                WHERE LocationName = @LocationName
+                            ), 
                             Source = @Source 
-                            WHERE SbsID = @SbsID;";
+                            WHERE ProductID = @ProductID;";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@ProductID", product.ProductID);
                 command.Parameters.AddWithValue("@SbsID", product.SbsID);
                 command.Parameters.AddWithValue("@NcrID", product.NcrID);
                 command.Parameters.AddWithValue("@ProductDescription", product.ProductDescription);
@@ -201,7 +212,9 @@ namespace SBS_Inventory.Controllers
                 command.Parameters.AddWithValue("@AdvEA", product.AdvEA);
                 command.Parameters.AddWithValue("@Discontinued", product.Discontinued);
                 command.Parameters.AddWithValue("@StatusID", product.StatusID);
+                command.Parameters.AddWithValue("@StatusName", product.StatusName);
                 command.Parameters.AddWithValue("@LocationID", product.LocationID);
+                command.Parameters.AddWithValue("@LocationName", product.LocationName);
                 command.Parameters.AddWithValue("@Source", product.Source);
 
                 connection.Open();

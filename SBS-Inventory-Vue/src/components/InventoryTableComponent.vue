@@ -60,7 +60,6 @@ export default {
   async created() {
     try {
       const data = await getProducts();
-      console.log('data', data)
       this.inventoryItems = data;
     } catch (error) {
       console.error(error);

@@ -20,6 +20,7 @@
           icon="pi pi-times"
         ></Button>
         <Button
+        @click="addLocationByName()"
           label="Save"
           icon="pi pi-check"
         ></Button>
@@ -30,6 +31,8 @@
   
   <script>
   
+  import { addLocationByName } from "@/services/inventory.services.js";
+
   export default {
     name: "AddLocationComponent",
     data: function () {
@@ -43,8 +46,18 @@
         this.addLocationDialog = true;
       },
       closeDialog() {
-      this.addProductDialog = false;
+      this.addLocationDialog = false;
     },
+    async addLocationByName() {
+      try {
+        await addLocationByName(this.locationName);
+        this.closeDialog();
+        this.locationName = '';
+      }
+     catch (error) {
+      console.error(error);
+    }
+    }
     },
   };
   </script>

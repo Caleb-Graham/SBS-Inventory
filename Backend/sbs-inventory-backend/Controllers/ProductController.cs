@@ -16,7 +16,7 @@ namespace SBS_Inventory.Controllers
                             FROM Product P
                             JOIN Location L ON P.LocationID = L.LocationID
                             JOIN Status S ON P.StatusID = S.StatusID
-";
+                            ";
 
             var products = new List<Product>();
 
@@ -144,7 +144,7 @@ namespace SBS_Inventory.Controllers
         {
             string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
             string query = @"INSERT INTO Product (SbsID, NcrID, ProductDescription, ModelID, Counts, Price, Cost, AdvEA, Discontinued, StatusID, LocationID, Source) 
-            VALUES (@SbsID, @NcrID, @ProductDescription, @ModelID, @Counts, @Price, @Cost, @AdvEA, @Discontinued, @Status, @Status, @Source);";
+            VALUES (@SbsID, @NcrID, @ProductDescription, @ModelID, @Counts, @Price, @Cost, @AdvEA, @Discontinued, @Status, @LocationID, @Source);";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -170,7 +170,7 @@ namespace SBS_Inventory.Controllers
         }
 
         [HttpPut]
-        [Route("/products/update")] 
+        [Route("/products/update")]
         public IActionResult UpdateProduct(Product product)
         {
             string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
@@ -226,8 +226,8 @@ namespace SBS_Inventory.Controllers
 
 
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteProduct(int id)
+        [HttpDelete("/products/delete/{productID}")]
+        public IActionResult DeleteProduct(int productID)
         {
             string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
             string query = "DELETE FROM Product WHERE ProductID = @ProductID;";
@@ -235,7 +235,90 @@ namespace SBS_Inventory.Controllers
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@ProductID", id);
+                command.Parameters.AddWithValue("@ProductID", productID);
+
+                connection.Open();
+
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+        }
+
+        [HttpGet]
+        [Route("/locations")]
+        public IActionResult GetLocations()
+        {
+            string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
+            string query = @"SELECT *
+                            FROM Location
+                            ";
+
+            var locations = new List<Location>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    int LocationID = reader.GetInt32(0);
+                    string LocationName = reader.GetString(1);
+
+                    var location = new Location
+                    {
+                        LocationID = LocationID,
+                        LocationName = LocationName,
+                    };
+
+                    locations.Add(location);
+                }
+            }
+
+            return Ok(locations);
+        }
+
+        [HttpPost]
+        [Route("/locations/add")]
+        public IActionResult AddLocation([FromBody] LocationRequest request)
+        {
+            string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
+            string query = @"INSERT INTO Location (LocationName) 
+            VALUES (@LocationName);";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@LocationName", request.LocationName);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+
+            return Ok(true);
+        }
+
+        [HttpDelete("/locations/delete/{locationName}")]
+        public IActionResult DeleteLocation(string locationName)
+        {
+            string connectionString = "Server=localhost;Database=SBS_Inventory;Trusted_Connection=True;";
+            string query = "DELETE FROM Location WHERE LocationName = @LocationName;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@LocationName", locationName);
 
                 connection.Open();
 

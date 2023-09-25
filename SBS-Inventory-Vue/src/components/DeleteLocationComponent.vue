@@ -13,7 +13,7 @@
             <Dropdown
               v-model="location"
               placeholder="What location do you want to delete?"
-              :options="['Springfield', 'Ash Grove']"
+              :options="locations"
             ></Dropdown>
           </div>
           </div>
@@ -24,6 +24,7 @@
           icon="pi pi-times"
         ></Button>
         <Button
+        @click="deleteLocationByName()"
           label="Save"
           icon="pi pi-check"
         ></Button>
@@ -33,21 +34,49 @@
   </template>
   
   <script>
-  
+
+  import { getLocations } from "@/services/inventory.services.js";
+  import { deleteLocationByName } from "@/services/inventory.services.js";
+
   export default {
     name: "DeleteLocationComponent",
     data: function () {
       return {
+        locations: [],
         deleteLocationDialog: false,
+        location: null,
       };
     },
     methods: {
       deleteLocation() {
         this.deleteLocationDialog = true;
+        this.getLocations();
       },
       closeDialog() {
       this.deleteLocationDialog = false;
     },
+    async getLocations() {
+      this.locations = [];
+      try {
+        const data = await getLocations();
+        data.forEach(x => {
+          this.locations.push(x.locationName);
+        });
+      }
+     catch (error) {
+      console.error(error);
+    }
+    },
+    async deleteLocationByName() {
+      try {
+        await deleteLocationByName(this.location);
+        this.closeDialog();
+        this.getLocations();
+      }
+     catch (error) {
+      console.error(error);
+    }
+    }
     },
   };
   </script>

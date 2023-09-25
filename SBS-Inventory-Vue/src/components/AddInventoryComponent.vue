@@ -64,7 +64,7 @@
             <Dropdown
               v-model="location"
               placeholder="Where is this product"
-              :options="['Springfield', 'Ash Grove']"
+              :options="locationsArry"
             ></Dropdown>
           </div>
           <div class="input-text">
@@ -96,6 +96,8 @@
 <script>
 import { addProduct } from "@/services/inventory.services.js";
 import { getProducts } from "@/services/inventory.services.js";
+import { getLocations } from "@/services/inventory.services.js";
+
 
 export default {
   name: "AddInventoryComponent",
@@ -103,6 +105,8 @@ export default {
     return {
       newInventoryItem: {},
       newInventoryItems: [],
+      locations: [],
+      locationsArry: [],
       addProductDialog: false,
 
       // form values
@@ -123,6 +127,7 @@ export default {
   methods: {
     addProducts() {
       this.addProductDialog = true;
+      this.getLocations();
     },
     closeDialog() {
       this.addProductDialog = false;
@@ -149,11 +154,20 @@ export default {
             ? false
             : this.discontinued,
         StatusID: this.status == "In Warehouse" ? '1' : '2',
-        LocationID: this.location == "Springfield" ? '1' : '2',
+        LocationID: this.getLocationID(this.location),
         Source: this.source,
       };
     },
-
+    getLocationID(locationName) {
+      var locationID;
+        this.locations.forEach((x) => {
+          if (locationName == x.locationName)
+          {
+            locationID = x.locationID.toString();
+          }
+        });
+        return locationID;
+    },
     resetInventoryObject() {
       this.sbsID = null;
       this.ncrID = null;
@@ -164,6 +178,7 @@ export default {
       this.cost = null;
       this.advancedEA = null;
       this.discontinued = null;
+      this.location = null;
       this.source = null;
     },
     saveNewProduct() {
@@ -185,6 +200,19 @@ export default {
         .catch((error) => {
           console.error(error.message);
         });
+    },
+    async getLocations() {
+      this.locations = [];
+      try {
+        const data = await getLocations();
+        data.forEach(x => {
+          this.locations.push(x);
+          this.locationsArry.push(x.locationName);
+        });
+      }
+     catch (error) {
+      console.error(error);
+    }
     },
   },
 };

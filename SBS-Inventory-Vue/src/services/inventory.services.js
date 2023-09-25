@@ -56,8 +56,8 @@ export function getProducts() {
   }
   
   
-  export function deleteProductById(id) {
-    return fetch(`http://localhost:5227/Products/${id}`, {
+  export function deleteProductById(productID) {
+    return fetch(`http://localhost:5227/products/delete/${productID}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -68,6 +68,54 @@ export function getProducts() {
         return response.json();
       } else {
         throw new Error('Failed to delete product');
+      }
+    });
+  }
+
+  export function getLocations() {
+    return fetch('http://localhost:5227/locations')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Failed to fetch location data');
+        }
+      });
+  }
+
+  export function addLocationByName(locationName) {
+    const requestData = {
+      locationName: locationName
+    };
+  
+    return fetch('http://localhost:5227/locations/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Failed to add location');
+      }
+    });
+  }
+
+  export function deleteLocationByName(locationName) {
+    return fetch(`http://localhost:5227/locations/delete/${locationName}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Failed to delete location');
       }
     });
   }
